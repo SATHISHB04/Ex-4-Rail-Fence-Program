@@ -12,55 +12,63 @@ In the rail fence cipher, the plain text is written downwards and diagonally on 
 
 # ALGORITHM:
 
-STEP-1: Read the Plain text.
-STEP-2: Arrange the plain text in row columnar matrix format.
-STEP-3: Now read the keyword depending on the number of columns of the plain text.
-STEP-4: Arrange the characters of the keyword in sorted order and the corresponding columns of the plain text.
-STEP-5: Read the characters row wise or column wise in the former order to get the cipher text.
+Enter the secret message and number of rails.
 
+
+Create a matrix with the specified number of rails.
+
+
+Place the message characters in a zigzag pattern.
+
+
+Change the direction at the top and bottom rails.
+
+
+Read the characters row by row.
+
+
+Display the resulting text as the encrypted message.
 # PROGRAM
-```
-#include <stdio.h>
+```#include <stdio.h>
 #include <string.h>
-#include <stdlib.h>
-int main() {
-    char str[1000];
-    int rails, len;
-    int i, j;
 
-    printf("Enter a Secret Message:\n");
-    fgets(str, sizeof(str), stdin);
-    str[strcspn(str, "\n")] = '\0';
+int main()
+{
+    char msg[100];
+    int rail, i, j, row = 0, dir = 1;
 
-    printf("Enter number of rails:\n");
-    scanf("%d", &rails);
+    printf("Enter message: ");
+    fgets(msg, 100, stdin);
 
-    len = strlen(str);
-    char rail[rails][len];
-    for (i = 0; i < rails; i++) {
-        for (j = 0; j < len; j++) {
-            rail[i][j] = '\n';
-        }
-    }
-    int row = 0;
-    int dir_down = 0; 
+    printf("Enter number of rails: ");
+    scanf("%d", &rail);
 
-    for (j = 0; j < len; j++) {
-        rail[row][j] = str[j];
+    msg[strcspn(msg, "\n")] = '\0';
+
+    char a[rail][100];
+
+    for (i = 0; i < rail; i++)
+        for (j = 0; j < 100; j++)
+            a[i][j] = ' ';
+
+    for (i = 0; msg[i] != '\0'; i++)
+    {
+        a[row][i] = msg[i];
+
         if (row == 0)
-            dir_down = 1;
-        else if (row == rails - 1)
-            dir_down = 0;
-        row += dir_down ? 1 : -1;
+            dir = 1;
+        if (row == rail - 1)
+            dir = -1;
+
+        row += dir;
     }
+
     printf("Encrypted Message: ");
-    for (i = 0; i < rails; i++) {
-        for (j = 0; j < len; j++) {
-            if (rail[i][j] != '\n')
-                printf("%c", rail[i][j]);
-        }
-    }
-    printf("\n");
+
+    for (i = 0; i < rail; i++)
+        for (j = 0; msg[j] != '\0'; j++)
+            if (a[i][j] != ' ')
+                printf("%c", a[i][j]);
 
     return 0;
 }
